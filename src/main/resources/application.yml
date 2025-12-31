@@ -1,0 +1,25 @@
+# 注意事项:
+# 1、空格不能少：在 YAML 中，冒号后面必须接一个空格（如 enabled: true），否则 Spring Boot 无法识别。
+# 2、缩进必须统一：不能混用制表符 (Tab) 和空格，建议统一使用 2 个空格。
+spring:
+  profiles:
+    active: dev # 默认激活开发环境
+  application:
+    name: productivity-hub
+  threads:
+    virtual:
+      enabled: true # 开启 Java 21 虚拟线程
+  main:
+    banner-mode: "off"
+
+server:
+  port: 8888
+
+management:
+  server:
+    port: 8081 # Actuator 独立管理端口
+    address: 127.0.0.1 # 进阶：限制仅允许本地访问
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics" # 暴露常用的端点

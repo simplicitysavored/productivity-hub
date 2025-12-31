@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: productivity-db
+    environment:
+      POSTGRES_DB: productivity_hub_prod
+      POSTGRES_PASSWORD: prod_password
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: productivity-redis
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    container_name: productivity-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - db
+      - redis
