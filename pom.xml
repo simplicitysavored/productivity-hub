@@ -145,10 +145,10 @@
                 </configuration>
             </plugin>
             <!-- GraalVM, 黑科技支持。它允许您将整个 Java 应用编译为本地二进制可执行文件。开启后，您的应用启动时间将从几秒降低到几十毫秒。 -->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
-            </plugin>
+            </plugin>-->
             <!-- 将项目打包成一个可执行的 FAT JAR（包含所有依赖），让您可以通过 java -jar 命令直接启动。 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>

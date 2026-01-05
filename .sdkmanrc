@@ -1,0 +1,3 @@
+# sdk env 命令切换当前项目Java、maven版本
+java=21-local
+maven=3.9.9-local
