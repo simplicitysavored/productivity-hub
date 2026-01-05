@@ -1,10 +1,36 @@
+logging:
+  # 设置日志级别
+  level:
+    root: info
+    # 将您自己的业务包设置为 debug 方便开发调试
+    xyz.yuanjin.project.productivityhub: debug
+    # 屏蔽一些框架产生的过细日志
+    org.springframework.web: info
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/productivity_hub_dev
-    username: dev_user
-    password: dev_password
+    username: hub_admin
+    password: hub@2025
   data:
     redis:
       host: localhost
       port: 6379
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin123
+    # 虚拟主机，默认是 /
+    virtual-host: /
+    # 连接超时设置
+    connection-timeout: 5000ms
+    publisher-confirm-type: correlated # 开启发布确认，确保消息成功到达交换机
+    publisher-returns: true             # 开启退回机制，确保消息路由到队列
+    listener:
+      simple:
+        acknowledge-mode: auto        # 开启手动(manual)/自动(auto)确认模式，防止消息丢失
+        retry:
+          enabled: true
+          max-attempts: 3 # 重试3次失败后，消息才会进入死信队列
