@@ -10,8 +10,8 @@ services: # 定义该项目下所有的容器服务
 #    ports:
 #      - "5432:5432" # 将宿主机的 5432 端口映射到容器的 5432 端口
     volumes:
-      # 将 SQL 脚本映射到容器的初始化目录
-      - ./src/main/resources/init-script:/docker-entrypoint-initdb.d
+      - ~/workspace/docker.data/productivity-hub/postgres_data:/var/lib/postgresql/data # 持久化数据库文件
+      - ./src/main/resources/init-script:/docker-entrypoint-initdb.d # 将 SQL 脚本映射到容器的初始化目录
 
   redis:
     image: redis:7-alpine # 使用 Redis 7 的 Alpine 版本镜像 。Alpine 镜像体积非常小，能节省存储空间 。
@@ -37,7 +37,15 @@ services: # 定义该项目下所有的容器服务
       - "9090:8888"
     environment:
       - SPRING_PROFILES_ACTIVE=prod # 设置 Spring Boot 的激活配置文件为 prod 。这将对应 Dockerfile 中的 ${SPRING_PROFILES_ACTIVE} 变量 。
+    volumes:
+      - ~/workspace/docker.data/productivity-hub/logs:/app/logs # 日志持久化
+      - ~/workspace/docker.data/productivity-hub/config/application-prod.yml:/app/config/application-prod.yml:ro # 外部配置，挂载到容器内 Spring Boot 默认的配置扫描路径
     depends_on: # 服务依赖关系 ：告诉 Docker 启动 app 之前，必须先启动 db 和 redis 容器 。
       - db
       - redis
       - rabbitmq
+    logging:                  # 为了防止 Docker 容器的 .log 文件无限增长撑爆服务器硬盘，必须在 docker-compose.yml 中配置 logging 驱动
+      driver: "json-file"     # 使用标准的 JSON 日志驱动
+      options:
+        max-size: "100m"      # 单个容器日志文件最大 100MB
+        max-file: "3"         # 最多保留 3 个备份文件

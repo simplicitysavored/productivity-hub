@@ -1,4 +1,12 @@
 logging:
+  # 设置日志存储路径（挂载到宿主机时需要用到）
+  file:
+    name: logs/app.log
+  logback:
+    rollingpolicy:             # 日志轮转配置（Spring Boot 2.1+ 默认支持）
+      max-file-size: 10MB      # 单个文件超过10MB时拆分
+      max-history: 30           # 保留最近30天的日志
+      total-size-cap: 1GB      # 所有日志文件总大小限制
   level:
     root: info
     # 生产环境通常将业务日志级别设为 info，避免产生过大日志文件
