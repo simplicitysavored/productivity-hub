@@ -1,0 +1,40 @@
+logging:
+  level:
+    root: info
+    # 生产环境通常将业务日志级别设为 info，避免产生过大日志文件
+    xyz.yuanjin.project.productivityhub: info
+    org.springframework.web: warn
+
+spring:
+  datasource:
+    # 使用 docker-compose.yml 中定义的服务名 "db" 和数据库名 "productivity_hub_prod"
+    url: jdbc:postgresql://db:5432/productivity_hub_prod
+    username: postgres
+    # 必须与 docker-compose 中 POSTGRES_PASSWORD 保持一致
+    password: hubProd@admin
+    driver-class-name: org.postgresql.Driver
+
+  data:
+    redis:
+      # 使用 docker-compose.yml 中定义的服务名 "redis"
+      host: redis
+      port: 6379
+      # 如果生产环境 Redis 设置了密码，请在此添加
+      # password: your_redis_password
+
+  rabbitmq:
+    # 假设您未来会在 docker-compose 中添加 rabbitmq 服务，服务名设为 "rabbitmq"
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    connection-timeout: 5000ms
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: auto
+        retry:
+          enabled: true
+          max-attempts: 3

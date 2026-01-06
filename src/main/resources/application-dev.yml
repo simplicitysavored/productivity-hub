@@ -12,6 +12,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/productivity_hub_dev
     username: hub_admin
     password: hub@2025
+    driver-class-name: org.postgresql.Driver
   data:
     redis:
       host: localhost
